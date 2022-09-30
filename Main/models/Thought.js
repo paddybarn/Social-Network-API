@@ -1,8 +1,7 @@
-const { Schema, model } = require('mongoose');
-const Schema = require('./Assignment');
+const { Schema, model, mongoose } = require('mongoose');
 
 // Schema to create Student model
-const studentSchema = new Schema(
+const thoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
@@ -14,15 +13,48 @@ const studentSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-    username: { type: Schema.Types.ObjectId, ref: 'user' },
+    username: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+    reactions: [reactionSchema]
     },
   {
     toJSON: {
       getters: true,
+      virtuals: true,
     },
+    id: false,
   }
 );
 
-const Student = model('student', studentSchema);
+thoughtSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length;
+});
 
-module.exports = Student;
+const reactionSchema = new mongoose.Schema({
+  reactionId: { 
+    type: Schema.Types.ObjectId, 
+    default: () => new Types.ObjectId() 
+  },
+  reactionBody: {
+    type: String,
+    required: true,
+    max_length: 280
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+},
+{
+  toJSON: {
+    getters: true
+  },
+  id: false,
+});
+
+const Thought = model('thought', thoughtSchema);
+
+module.exports = Thought;
