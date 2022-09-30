@@ -6,18 +6,18 @@ const {
   deleteStudent,
   addAssignment,
   removeAssignment,
-} = require('../../controllers/studentController');
+} = require('../../controllers/thoughtController');
 
 // /api/students
 router.route('/').get(getStudents).post(createStudent);
 
 // /api/students/:studentId
-router.route('/:studentId').get(getSingleStudent).delete(deleteStudent);
+router.route('/:thoughtId').get(getSingleStudent).delete(deleteStudent);
 
 // /api/students/:studentId/assignments
-router.route('/:studentId/assignments').post(addAssignment);
+router.route('/:thoughtId/reactions').post(addAssignment);
 
 // /api/students/:studentId/assignments/:assignmentId
-router.route('/:studentId/assignments/:assignmentId').delete(removeAssignment);
+router.route('/:thoughtId/reactions/:reactionsId').delete(removeAssignment);
 
 module.exports = router;

@@ -5,14 +5,14 @@ const {
   createCourse,
   updateCourse,
   deleteCourse,
-} = require('../../controllers/courseController.js');
+} = require('../../controllers/userController.js');
 
 // /api/courses
 router.route('/').get(getCourses).post(createCourse);
 
 // /api/courses/:courseId
 router
-  .route('/:courseId')
+  .route('/:userId')
   .get(getSingleCourse)
   .put(updateCourse)
   .delete(deleteCourse);
