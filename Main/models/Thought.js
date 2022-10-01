@@ -28,7 +28,10 @@ const reactionSchema = new mongoose.Schema({
 
 const thoughtSchema = new Schema(
   {
-    thoughtText: {
+    thoughtId: {
+      type: Number,
+    },
+    thought: {
       type: String,
       required: true,
       min_length: 1,
