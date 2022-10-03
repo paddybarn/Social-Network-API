@@ -40,19 +40,35 @@ module.exports = {
   },
   // Delete a student and remove them from the course
   deleteThought(req, res) {
-    Thought.findOneAndRemove({ thoughtId: req.params.thoughtId })
+    Thought.findOneAndDelete({ thoughtId: req.params.thoughtId })
       .then((thought) =>
         !thought
-          ? res.status(404).json({ message: 'No such thought exists' })
-          : User.findOneAndUpdate(
-              { _id: req.params.thoughtId },
-              { $pull: { thought: req.params.thoughtId } },
-              { new: true }
-            )
-      ) .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+          ? res.status(404).json({ message: 'No thought with that ID' })
+          : Thought.findOneAndUpdate(
+            { thoughtId: req.params.thoughtId },
+            { $pull: { 
+              thoughtId: req.params.thoughtId,
+              thought: req.params.thought
+             } },
+            { new: true }
+          )
+      )
+      .then(() => res.json({ message: 'thought and user deleted!' }))
+      .catch((err) => res.status(500).json(err));
+  },
+
+  updateThought(req, res) {
+    Thought.findOneAndUpdate(
+      { thoughtId: req.params.thoughtId },
+      { $set: req.body },
+      { new: true }
+    )
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: 'No course with this id!' })
+          : res.json(thought)
+      )
+      .catch((err) => res.status(500).json(err));
   },
 
   // Add an assignment to a student
