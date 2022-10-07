@@ -53,7 +53,7 @@ module.exports = {
             { new: true }
           )
       )
-      .then(() => res.json({ message: 'thought and user deleted!' }))
+      .then(() => res.json({ message: 'thought deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
 
@@ -76,7 +76,7 @@ module.exports = {
     console.log('You are adding a reaction');
     console.log(req.body);
     Thought.findOneAndUpdate(
-      { _id: req.params.thoughtId },
+      { thoughtId: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
       { new: true }
     )
@@ -92,7 +92,7 @@ module.exports = {
   // Remove assignment from a student
   removeReaction(req, res) {
     Thought.findOneAndUpdate(
-      { _id: req.params.thoughtId },
+      { thougthId: req.params.thoughtId },
       { $pull: { reactions: { reactionId: req.params.reactionId } } },
       { new: true }
     )

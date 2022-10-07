@@ -33,9 +33,13 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with that username' })
-          : Thought.deleteMany({ userName: { $in: user.userName } })
+          : User.findOneAndUpdate(
+            { userName: req.params.userName },
+            { $pull: { userName: req.params.userName } },
+            { new: true }
+          )
       )
-      .then(() => res.json({ message: 'User and Thoughts deleted!' }))
+      .then(() => res.json({ message: 'user deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
   // Update a course
@@ -48,8 +52,8 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with this username!' })
-          : res.json(course)
+          : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
-  },
-};
+  }
+}
